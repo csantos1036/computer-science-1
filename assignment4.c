@@ -77,7 +77,7 @@ int merge(City * arr, int size, long long int dx, long long int dy)
          // Do a comparison
          ans++;
          
-         // Store the correct value
+         // Store the correct value based on dot product
           if (calculateDotProduct(&arr[fptr],dx ,dy) < calculateDotProduct(&arr[bptr], dx, dy))
          {
             tmp[mptr] = arr[fptr];
@@ -108,7 +108,8 @@ void copy(City * dst, City * src, int size)
    }
 }
 
-long long int calculateDotProduct(City * city, long long int dx, long long int dy){
+long long int calculateDotProduct(City * city, long long int dx, long long int dy)
+{
     // dx*pointX+dy*pointY
     return ((city->x * dx) + (city->y * dy));
 }
@@ -116,13 +117,14 @@ long long int calculateDotProduct(City * city, long long int dx, long long int d
 // Function to print an array
 void printArray(City * arr, int num)
 {
-    for (int i = 0; i < num; i++){
+    for (int i = 0; i < num; i++)
+    {
       printf("%s\n", arr[i].name);
     }
 }
 
-int main() {
-    
+int main()
+{
     int n; // Number of inputs
     char name[MAX + 1]; // City name
     long long int x; // X-location
@@ -132,13 +134,16 @@ int main() {
     
     scanf("%d", &n);
     
+    // Create a list of City elements
     City *cityList = (City *)calloc(n, sizeof(City));
     
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++)
+    {
         scanf("%lld", &x);
         scanf("%lld", &y);
         scanf("%s", name);
         
+        // Create a new city and add to cityList
         City * city = createCity(name, x, y);
         cityList[i] = * city;
     }
@@ -146,7 +151,10 @@ int main() {
     scanf("%lld", &dx);
     scanf("%lld", &dy);
     
+    // Perform merge sort based on dx and dy
     merge(cityList, n, dx, dy);
+    
+    // Print the sorted array
     printArray(cityList, n);
 
     // Free the names of cities
@@ -156,13 +164,14 @@ int main() {
         free(curCity->name);
     }
 
-    // Free the holder of the city list
+    // Free the city list
     free(cityList);
     
     return 0;
 }
 
-City * createCity(char * name, long long int x, long long int y){
+City * createCity(char * name, long long int x, long long int y)
+{
     // Create the city
     City * city = calloc(1, sizeof(City));
     city->x = x;
