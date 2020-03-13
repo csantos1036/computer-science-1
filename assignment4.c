@@ -168,6 +168,7 @@ City * createCity(char * name, long long int x, long long int y){
     city->x = x;
     city->y = y;
     
+    // Copy name into city->name
     city->name = calloc(strlen(name) + 1, sizeof(char));
     strcpy(city->name, name);
     
