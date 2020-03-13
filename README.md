@@ -1,1 +1,3 @@
-# computer-science-1
+# Computer Science 1
+
+Spring 2020
