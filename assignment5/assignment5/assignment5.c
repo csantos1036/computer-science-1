@@ -126,13 +126,9 @@ int main() {
         {
             // Prints list in either order depending on the condition of isFlipped
             if(isFlipped == 0)
-            {
                 printList(list);
-            }
             else
-            {
                printListBackward(list);
-            }
         }
         else if(strcmp(command,"FLIP") == 0)
         {
@@ -149,7 +145,8 @@ int main() {
         {
             // Perform opposite of last command
             strcpy(command, peek(undo));
-            if (strcmp(command,"FLIP") == 0){
+            if (strcmp(command,"FLIP") == 0)
+            {
                 // Adds action to redo stack
                 push(redo, "FLIP",' ');
                 
@@ -159,7 +156,8 @@ int main() {
                 // Removes the top element of the undo stack
                 pop(undo);
             }
-            else {
+            else
+            {
                 // Calls function for all commands except "FLIP"
                 stackActions(undo, redo, command, isFlipped, list);
             }
@@ -169,7 +167,8 @@ int main() {
         {
             // Perform opposite of last undo
             strcpy(command, peek(redo));
-            if (strcmp(command,"FLIP") == 0){
+            if (strcmp(command,"FLIP") == 0)
+            {
                 // Adds action to undo stack
                 push(undo, "FLIP",' ');
                 
@@ -179,7 +178,8 @@ int main() {
                 // Removes the top element of the redo stack
                 pop(redo);
             }
-            else {
+            else
+            {
                 // Calls function for all commands except "UNDO"
                 stackActions(redo, undo, command, isFlipped, list);
             }
@@ -189,45 +189,41 @@ int main() {
     return 0;
 }
 
+// Function for the undo and redo stacks to add an action to stack2
+// and remove the top action from the stack1
 void stackActions(Stack * stack1, Stack * stack2, char * command, int isFlipped, LinkedList * list)
 {
-    // Function for the undo and redo stacks to add an action to the stack2 stack
-    // and remove the top action from the stack1 stack
-    
-    if ((strcmp(command,"TYPE")) == 0){
+    if ((strcmp(command,"TYPE")) == 0)
+    {
         push(stack2, "BACK", stack1->top->data);
         insertion(stack1->top->data, isFlipped, list);
     }
-    else if (strcmp(command,"BACK") == 0) {
+    else if (strcmp(command,"BACK") == 0)
+    {
         push(stack2, "TYPE", stack1->top->data);
         deletion(isFlipped, list);
     }
     pop(stack1);
 }
 
-void insertion(char character, int isFlipped, LinkedList * list) {
+void insertion(char character, int isFlipped, LinkedList * list)
+{
     if(isFlipped == 0)
-    {
         insertTail(list, character);
-    }
     else
-    {
         insertHead(list, character);
-    }
 }
 
-void deletion(int isFlipped, LinkedList * list) {
+void deletion(int isFlipped, LinkedList * list)
+{
     if(isFlipped == 0)
-    {
        removeTail(list);
-    }
     else
-    {
        removeHead(list);
-    }
 }
 
-int flipIt(int isFlipped) {
+int flipIt(int isFlipped)
+{
     if (isFlipped == 1)
         return 0;
     return 1;
@@ -257,7 +253,8 @@ Action * newAction(char * commandVal, char data)
 // Pop an element from a stack
 void pop(Stack * stack)
 {
-    if(stack->top != NULL){
+    if(stack->top != NULL)
+    {
        Action * temp = stack->top;
        stack->top = temp->next;
        free(temp);
@@ -268,29 +265,24 @@ void pop(Stack * stack)
 void push(Stack * stack, char * commandVal, char data)
 {
     Action * action = newAction(commandVal, data);
+    
     if(isEmptyStack(stack))
-    {
         action->next = NULL;
-    }
     else
-    {
         action->next = stack->top;
-    }
+    
     stack->top = action;
 }
 
 // Get the value on the top of a stack
 char * peek(Stack * stack)
 {
-    
-    if (isEmptyStack(stack)){
+    if (isEmptyStack(stack))
         return "\0";
-    }
     
    // Return the value of the head of the linked list
    return stack->top->commandVal;
 }
-
 
 // Function to check if a stack is empty
 int isEmptyStack(Stack * stack)
@@ -300,7 +292,8 @@ int isEmptyStack(Stack * stack)
 
 void cleanStack(Stack * stack)
 {
-    if(stack->top != NULL){
+    if(stack->top != NULL)
+    {
        while (!isEmptyStack(stack))
           pop(stack);
        free(stack->top);
@@ -431,9 +424,8 @@ void printList(LinkedList * list)
     Node * space = list->head;
     int val = 0;
     
-    if (isEmpty(list) || list->tail->data == ' '){
-           printf("No word is found.");
-    }
+    if (isEmpty(list) || list->tail->data == ' ')
+           printf("No word found.");
     
     while (cur != NULL)
     {
@@ -449,29 +441,17 @@ void printList(LinkedList * list)
     
     // Condition if there is a space character in the buffer
     if (val == 1)
-    {
         cur = space->next;
-        
-        while (cur != NULL)
-        {
-            printf("%c", cur->data);
-            cur = cur->next;
-        }
-        printf("\n");
-    }
-    
     // Condition if there is no space character in the buffer
-    if (val == 0)
-    {
+    else if (val == 0)
         cur = list->head;
-        
-        while (cur != NULL && cur->data != ' ')
-        {
-            printf("%c", cur->data);
-            cur = cur->next;
-        }
-        printf("\n");
+    
+    while (cur != NULL)
+    {
+        printf("%c", cur->data);
+        cur = cur->next;
     }
+    printf("\n");
 }
 
 void printListBackward(LinkedList * list)
@@ -480,9 +460,8 @@ void printListBackward(LinkedList * list)
     Node * space = list->tail;
     int val = 0;
     
-    if (isEmpty(list) || list->head->data == ' '){
-           printf( "No word is found.");
-    }
+    if (isEmpty(list) || list->head->data == ' ')
+           printf("No word found.");
     
     while (cur != NULL)
     {
@@ -498,31 +477,19 @@ void printListBackward(LinkedList * list)
     
     // Condition if there is a space character in the buffer
     if (val == 1)
-    {
         cur = space->prev;
-        
-        while (cur != NULL)
-        {
-            printf("%c", cur->data);
-            cur = cur->prev;
-        }
-        printf("\n");
-    }
-    
     // Condition if there is no space character in the buffer
-    if (val == 0)
-    {
+    else if (val == 0)
         cur = list->tail;
-        
-        while (cur != NULL && cur->data != ' ')
-        {
-            printf("%c", cur->data);
-            cur = cur->prev;
-        }
-        printf("\n");
+    
+    while (cur != NULL)
+    {
+        printf("%c", cur->data);
+        cur = cur->prev;
     }
+    printf("\n");
 }
-
+    
 void freeList (LinkedList * list)
 {
     while(!isEmpty(list))
