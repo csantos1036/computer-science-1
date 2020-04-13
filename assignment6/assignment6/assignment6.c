@@ -30,14 +30,14 @@ struct friend_bst {
     char * name;
 };
 
-//user_bst prototypes
+// user_bst prototypes
 user_bst * createUser(char *, char *);
 user_bst * insertUser(user_bst *, char *, char *);
 void freeAll(user_bst *);
 int containsUser(user_bst *, char *);
 user_bst * locate(user_bst *, char *);
 
-//friend_bst prototypes
+// friend_bst prototypes
 void inOrderPrintFriends(friend_bst *);
 void swapFriend(friend_bst *, friend_bst *);
 friend_bst * createFriend(char *);
@@ -219,7 +219,7 @@ friend_bst * removeFriend(friend_bst * rt, char * name)
 {
     if (rt == NULL)
     {
-        return rt; // can't remove anything
+        return rt;
     }
     if (strcmp(rt->name, name) < 0)
     {
@@ -427,11 +427,12 @@ user_bst * addQuery(user_bst * rt, char * name1, char * name2)
     }
     else if (containsUser(rt, name1))
     {
+        // Create temporary user_bst node in order for the root to remain the same
         user_bst * tmp;
         tmp = locate(rt, name1);
+        // Checks to see if friend exists already, if not create new friend_bst node
         if(!containsFriend(tmp->friends, name2))
         {
-            //printf("inserting friend: %s\n", name2);
             tmp->friends = insertFriend(tmp->friends, name2);
             tmp->numFriends++;
         }
@@ -441,10 +442,13 @@ user_bst * addQuery(user_bst * rt, char * name1, char * name2)
 
 user_bst * removeQuery(user_bst * rt, char * name1, char * name2)
 {
+    // Checks to see if user exists
     if (containsUser(rt, name1))
     {
+        // Create temporary user_bst node in order for the root to remain the same
         user_bst * tmp;
         tmp = locate(rt, name1);
+        // Checks to see if name2 ia friend of the user, name1
         if(containsFriend(tmp->friends, name2))
         {
             tmp->friends = removeFriend(tmp->friends, name2);
